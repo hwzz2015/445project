@@ -7,13 +7,13 @@ void setup()
 {
   Serial.begin(9600);                            // Initialize serial communication at 9600
   Wire.begin();                                  // Initialize Arduino in I2C master.
-  Wire.beginTransmission(0x44);                  // I2C address of OPT3001 = 0x44
+  Wire.beginTransmission(0x45);                  // I2C address of OPT3001 = 0x44
   Wire.write(0x01);                              // Config register address 0x01
   Wire.write(0xCE);
   Wire.write(0x10);                              // Write 0xCE10 to turn on sensor
   Wire.endTransmission();
 
-  Wire.beginTransmission(0x45);                  // I2C address of OPT3001 = 0x45
+  Wire.beginTransmission(0x47);                  // I2C address of OPT3001 = 0x45
   Wire.write(0x01);                              // Config register address 0x01
   Wire.write(0xCE);
   Wire.write(0x10);                              // Write 0xCE10 to turn on sensor
@@ -25,12 +25,12 @@ void setup()
 void loop() 
 { 
   float flux1, flux2;
-  Wire.beginTransmission(0x44);
+  Wire.beginTransmission(0x45);
   Wire.write(0x00);                              // Send result register address
   Wire.endTransmission();
   delay(10);
   
-  Wire.requestFrom(0x44, 2);                     // Request 2 bytes data from OPT3001
+  Wire.requestFrom(0x45, 2);                     // Request 2 bytes data from OPT3001
   uint16_t iData;
   uint8_t  iBuff[2];
   while (Wire.available())
@@ -41,12 +41,12 @@ void loop()
     flux1 = SensorOpt3001_convert(iData);   // Calculate LUX from sensor data
   }
   
-  Wire.beginTransmission(0x45);
+  Wire.beginTransmission(0x47);
   Wire.write(0x00);                              // Send result register address
   Wire.endTransmission();
   delay(10);
   
-  Wire.requestFrom(0x45, 2);                     // Request 2 bytes data from OPT3001
+  Wire.requestFrom(0x47, 2);                     // Request 2 bytes data from OPT3001
   while (Wire.available())
   {
   

@@ -11,12 +11,22 @@
 AccelStepper stepper1(HALFSTEP, motorPin1, motorPin3, motorPin2, motorPin4);
 
 void setup() {
-  stepper1.setMaxSpeed(1000.0);
-  stepper1.setAcceleration(500.0);
-  stepper1.setSpeed(800);
+  
+  stepper1.setMaxSpeed(1200.0);
+  stepper1.setAcceleration(600.0);
+  stepper1.setSpeed(300);
   stepper1.moveTo(0);
 
+  Serial.begin(9600);
+  while (!Serial);             // Leonardo: wait for serial monitor
+  Serial.println("\nstart");
+  stepper1.runToNewPosition(0);
+
 }//--(end setup )---
+
+float pos =0;
+float stepsize = 2000; //negative for clock-wise
+int steps = 20;
 
 void loop() {
 
@@ -25,7 +35,11 @@ void loop() {
     stepper1.moveTo(-stepper1.currentPosition());
   }
   */
+  //stepper1.runToNewPosition(-20000);
   
-  stepper1.runToNewPosition(0);
-  stepper1.runToNewPosition(4000);
+  
+  if(pos>stepsize*steps or pos < -stepsize*steps)stepsize *= -1;
+  pos += stepsize;
+  stepper1.runToNewPosition(pos);
+  Serial.println(stepper1.currentPosition());
 }
